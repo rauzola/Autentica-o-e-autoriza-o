@@ -6,7 +6,7 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { singnIn } = useContext(AuthContext)
+  const { signIn } = useContext(AuthContext)
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -16,7 +16,7 @@ export default function Home() {
       password,
     }
 
-    await singnIn(data);
+    await signIn(data);
   }
 
   return (
