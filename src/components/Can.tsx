@@ -1,25 +1,24 @@
-import { ReactNode } from "react";
-import { useCan } from "../hooks/useCan";
+import { useContext } from "react"
+import { validateUserPermissions } from "../../utils/validateUserPermissions";
+import { AuthContext } from "../contexts/AuthContext";
 
-interface CanProps {
-  children: ReactNode;
+
+type UseCanParams = {
   permissions?: string[];
   roles?: string[];
 }
+export function useCan({ permissions, roles }: UseCanParams) {
+  const { user, isAuthenticated } = useContext(AuthContext);
 
-export function Can({ children, permissions, roles }: CanProps) {
-  const userCanSeeComponent = useCan({
-    permissions, roles
-  });
-
-  if (!userCanSeeComponent) {
-    return null;
+  if (!isAuthenticated) {
+    return false;
   }
 
+  const userHasValidPermissions = validateUserPermissions({
+    user,
+    permissions,
+    roles
+  })
 
-  return(
-    <>
-      {children}
-    </>
-  )
-}
+  return userHasValidPermissions;
+} 
